@@ -20,7 +20,6 @@ app.post("/sign-up" , (req, res) => {
 
 app.post("/tweets" , (req, res) => {
     const { username, tweet} = req.body
-
     const ExisteUsuario = usuarios.find((usuario) => usuario.username === username)
 
     if(!ExisteUsuario){
@@ -32,7 +31,12 @@ app.post("/tweets" , (req, res) => {
 })
 
 app.get("/tweets" , (req, res) => {
-    
+    const TweetUnido = tweets.map((tweet) => {
+        const usuario = usuarios.find((usuario) => usuario.username === tweet.username)
+        return {...tweet, avatar: usuario.avatar}
+    })
+
+    res.send(TweetUnido.slice(-10))
 })
 
 app.listen(5000, () => console.log("Rodando na porta 5000"));
